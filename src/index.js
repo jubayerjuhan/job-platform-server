@@ -7,6 +7,8 @@ import cors from "cors"
 
 // routes
 import employeeRoutes from "./routes/employeeRoutes.js";
+import employerRoutes from "./routes/employerRoutes.js";
+import jobRoutes from "./routes/jobRoutes.js";
 
 
 const app = express()
@@ -17,6 +19,8 @@ app.use(bodyParser.json());
 connectDb();
 
 app.use("/employee",employeeRoutes)
+app.use("/",employerRoutes)
+app.use("/",jobRoutes)
 
 app.listen(4000, () => {
   console.log("App Listening On Port 4000")
