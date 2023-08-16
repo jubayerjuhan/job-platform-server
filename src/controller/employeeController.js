@@ -42,3 +42,41 @@ export const loginEmployee = catchAsyncError(async (req, res, next) => {
     res.status(500).json({ message: 'An error occurred' });
   }
 });
+
+
+// Get all employees
+export const getAllEmployees = async (req, res) => {
+  try {
+    const employees = await Employee.find();
+    res.status(200).json(employees);
+  } catch (error) {
+    res.status(500).json({ error: 'An error occurred while fetching employees' });
+  }
+};
+
+// Upload employee
+export const uploadEmployee = async (req, res) => {
+  try {
+    const newEmployeeData = req.body;
+    const newEmployee = new Employee(newEmployeeData);
+    await newEmployee.save();
+    res.status(201).json(newEmployee);
+  } catch (error) {
+    res.status(400).json({ error: 'Error uploading employee' });
+  }
+};
+
+// Delete employee
+export const deleteEmployee = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedEmployee = await Employee.findByIdAndDelete(id);
+    if (deletedEmployee) {
+      res.status(200).json(deletedEmployee);
+    } else {
+      res.status(404).json({ error: 'Employee not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'An error occurred while deleting employee' });
+  }
+};

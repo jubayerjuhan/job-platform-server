@@ -66,10 +66,25 @@ const deleteJobById = async (req, res) => {
   }
 };
 
+
+// Controller to get jobs posted by a specific employer based on provided employerId
+export const getJobsByEmployerId = async (req, res) => {
+  try {
+
+    const jobs = await Job.find({ employer: req.params.id }).populate('employer', 'name');
+
+    res.json(jobs);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching jobs', error: error.message });
+  }
+};
+
+
 export {
   createJob,
   getAllJobs,
   getJobById,
   updateJobById,
   deleteJobById,
+  
 };

@@ -5,6 +5,7 @@ import {
   getJobById,
   updateJobById,
   deleteJobById,
+  getJobsByEmployerId,
 } from '../controller/jobController.js'; // Update the path accordingly
 
 const router = express.Router();
@@ -14,6 +15,7 @@ router.post('/jobs', createJob);
 
 // Get all jobs
 router.get('/jobs', getAllJobs);
+router.get('/myjobs/:id', getJobsByEmployerId);
 
 // Get a single job by ID
 router.get('/jobs/:id', getJobById);
