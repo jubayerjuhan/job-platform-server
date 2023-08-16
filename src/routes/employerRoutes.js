@@ -1,10 +1,11 @@
 import express from 'express';
-import { createEmployer, deleteEmployerById, getAllEmployers, getEmployerById, updateEmployerById } from '../controller/employerController.js';
+import { createEmployer, deleteEmployerById, loginController, getAllEmployers, getEmployerById, updateEmployerById } from '../controller/employerController.js';
 
 const router = express.Router();
 
 // Create a new employer
 router.post('/employers', createEmployer);
+router.post('/employers/login', loginController);
 
 // Get all employers
 router.get('/employers', getAllEmployers);

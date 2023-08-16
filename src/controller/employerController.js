@@ -10,6 +10,26 @@ export const createEmployer = async (req, res) => {
   }
 };
 
+export const loginController = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Find the employer by email
+    const employer = await Employer.findOne({ email });
+
+    // If employer not found or password doesn't match, return error
+    if (!employer || !(await employer.comparePassword(password))) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    // Return the logged-in employer's information
+    res.status(200).json(employer);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred' });
+  }
+};
+
 // Get all employers
 export const getAllEmployers = async (req, res) => {
   try {
