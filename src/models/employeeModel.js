@@ -33,14 +33,7 @@ const employeeSchema = new mongoose.Schema({
     type: String,
     default: "employee"
   },
-  appliedEmployees: [
-    {
-      employee: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Employee',
-      },
-      cvLink: String, // Add the CV link field
-    }],
+
   password: {
     type: String,
     required: [true, 'Password is required']

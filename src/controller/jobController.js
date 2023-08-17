@@ -85,6 +85,7 @@ export const applyToJob = async (req, res) => {
   try {
     const { jobId, employeeId, cvLink } = req.body;
 
+
     const job = await Job.findById(jobId);
     if (!job) {
       return res.status(404).json({ message: 'Job not found' });
@@ -96,6 +97,9 @@ export const applyToJob = async (req, res) => {
     }
 
     // Add the employee's ID and CV link to the job's appliedEmployees array
+    if (!job.appliedEmployees) {
+      job.appliedEmployees = []
+    }
     job.appliedEmployees.push({ employee: employeeId, cvLink });
     await job.save();
 
@@ -112,7 +116,7 @@ export const getAppliedEmployees = async (req, res) => {
   try {
     const jobId = req.params.jobId;
 
-    const job = await Job.findById(jobId).populate('appliedEmployees.employee');
+    const job = await Job.findById(jobId).populate({ path: 'appliedEmployees.employee', options: { strictPopulate: false } });
     if (!job) {
       return res.status(404).json({ message: 'Job not found' });
     }

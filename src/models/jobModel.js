@@ -17,6 +17,14 @@ const jobSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  appliedEmployees: [
+    {
+      employee: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Employee',
+      },
+      cvLink: String, // Add the CV link field
+    }],
   employer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Employer', // Replace with the actual model name for the employer
