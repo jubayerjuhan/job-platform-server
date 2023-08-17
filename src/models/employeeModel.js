@@ -32,7 +32,15 @@ const employeeSchema = new mongoose.Schema({
   role: {
     type: String,
     default: "employee"
-},
+  },
+  appliedEmployees: [
+    {
+      employee: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Employee',
+      },
+      cvLink: String, // Add the CV link field
+    }],
   password: {
     type: String,
     required: [true, 'Password is required']
@@ -40,9 +48,9 @@ const employeeSchema = new mongoose.Schema({
 });
 
 // Hash the password before saving
-employeeSchema.pre('save', async function(next) {
+employeeSchema.pre('save', async function (next) {
   const employee = this;
-  
+
   if (employee.isModified('password') || employee.isNew) {
     try {
       const salt = await bcrypt.genSalt(10);

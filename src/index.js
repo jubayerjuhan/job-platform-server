@@ -18,9 +18,9 @@ app.use(bodyParser.json());
 // connection to database
 connectDb();
 
-app.use("/employee",employeeRoutes)
-app.use("/",employerRoutes)
-app.use("/",jobRoutes)
+app.use("/employee", employeeRoutes)
+app.use("/", employerRoutes)
+app.use("/", jobRoutes)
 
 app.listen(4000, () => {
   console.log("App Listening On Port 4000")

@@ -1,3 +1,4 @@
+import Employee from "../models/employeeModel.js";
 import Job from "../models/jobModel.js";
 
 // Create a new job
@@ -80,11 +81,63 @@ export const getJobsByEmployerId = async (req, res) => {
 };
 
 
+export const applyToJob = async (req, res) => {
+  try {
+    const { jobId, employeeId, cvLink } = req.body;
+
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+
+    const employee = await Employee.findById(employeeId);
+    if (!employee) {
+      return res.status(404).json({ message: 'Employee not found, Maybe You Are a Employer and Trying To Apply To A Job' });
+    }
+
+    // Add the employee's ID and CV link to the job's appliedEmployees array
+    job.appliedEmployees.push({ employee: employeeId, cvLink });
+    await job.save();
+
+    return res.status(200).json({ message: 'Applied to job successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+
+export const getAppliedEmployees = async (req, res) => {
+  try {
+    const jobId = req.params.jobId;
+
+    const job = await Job.findById(jobId).populate('appliedEmployees.employee');
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+
+    const appliedEmployees = job.appliedEmployees.map(applied => {
+      return {
+        employee: applied.employee,
+        cvLink: applied.cvLink,
+      };
+    });
+
+    return res.status(200).json({ appliedEmployees });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+
 export {
   createJob,
   getAllJobs,
   getJobById,
   updateJobById,
   deleteJobById,
-  
+
 };
